@@ -1,0 +1,33 @@
+.activeLink {
+    border: 3px solid yellowgreen;
+}
+
+.activeDashboardLink{
+    color: red;
+    border-bottom: 1px solid red;
+    font-size: 3rem;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f8f8f8;
+  }
+  
+::-webkit-scrollbar-track {
+    background-color: transparent /*d2d2d2 ?*/;
+    border-radius: 5px;
+
+  }
+  
+::-webkit-scrollbar-thumb {
+    background-color: #F4442E;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+    transition: all 200ms ease-in-out;
+  }
+  
+::-webkit-scrollbar-thumb:hover {
+    background-color: #B8342B;
+  }
