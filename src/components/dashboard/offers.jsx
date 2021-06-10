@@ -7,7 +7,7 @@ export const Offers = ({ updateOffersCounter }) => {
   const posts = [];
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState();
-  const fetchPosts = async () => {
+  const fetchOffers = async () => {
     setLoading(true);
     const response = await db.collection("posts").get();
     response.forEach((doc) => posts.push(doc.data()));
@@ -16,7 +16,7 @@ export const Offers = ({ updateOffersCounter }) => {
     updateOffersCounter(posts.length);
   };
   useEffect(() => {
-    fetchPosts();
+    fetchOffers();
   }, []);
 
   return (
@@ -24,7 +24,7 @@ export const Offers = ({ updateOffersCounter }) => {
       <SimpleRow backgroundColor="#fff">
         <Subtitle> Offers </Subtitle>
       </SimpleRow>
-      <Marginer direction="vertical" margin={20}></Marginer>
+      <Marginer direction="vertical" margin={10}></Marginer>
       {loading && <Text>LOADING...</Text>}
       {!loading && (
         <ColumnsContainer>

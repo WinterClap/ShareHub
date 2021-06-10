@@ -99,8 +99,8 @@ const UserContainer = styled.footer`
   justify-content: space-between;
   align-items: center;
   border: 1px solid black;
-  width: 230px;
-  padding: 0 30px;
+  width: 250px;
+  padding-right: 30px;
   border-radius: 20px;
   margin-bottom: 10px;
 `;
@@ -146,7 +146,11 @@ export const DashboardNavBar = () => {
   let { path, url } = useRouteMatch();
   const history = useHistory();
   const { logout, currentUser } = useAuth();
+  const [userImageUrl, setUserImageUrl] = useState();
 
+  const getUserImageUrl = (imageUrl) => {
+    return setUserImageUrl(imageUrl);
+  };
   const handleLogout = async () => {
     try {
       await logout();
@@ -200,10 +204,10 @@ export const DashboardNavBar = () => {
         </AsideNavBar>
       </Box>
       <UserContainer>
-        <UserImage> </UserImage>
+        <UserImage image={userImageUrl}> </UserImage>
         <UserWrapper>
           <UserDimmedText>Account</UserDimmedText>
-          <UserText>{(currentUser && currentUser.email) || "No-User"}</UserText>
+          <UserText>{currentUser.email || "No-User"}</UserText>
         </UserWrapper>
         <LogoutIco
           onClick={handleLogout}

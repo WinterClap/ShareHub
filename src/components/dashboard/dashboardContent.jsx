@@ -166,9 +166,13 @@ const InputHeader = styled(motion.input)`
 export const DashboardContent = () => {
   const [showPostModal, setShowPostModal] = useState(false);
   const [offersCounter, setOffersCounter] = useState(0);
+  const [postsCounter, setPostsCounter] = useState(0);
 
   const updateOffersCounter = (value) => {
     return setOffersCounter(value);
+  };
+  const updatePostsCounter = (value) => {
+    return setPostsCounter(value);
   };
   return (
     <>
@@ -197,13 +201,13 @@ export const DashboardContent = () => {
           <CounterSection>
             <Ico width={"100%"} height={"100px"} image={PostsIco}></Ico>
             <SimpleColumn>
-              <Counter>{Math.floor(Math.random() * 100)}</Counter>
+              <Counter>{postsCounter}</Counter>
               <CounterSectionSubtitle>Posts</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
         </CounterSectionContainer>
         <Offers updateOffersCounter={updateOffersCounter}></Offers>
-        <Posts updatePostsCounter={"1"} setShowPostModal={setShowPostModal}></Posts>
+        <Posts updatePostsCounter={updatePostsCounter} setShowPostModal={setShowPostModal}></Posts>
       </Container>
     </>
   );

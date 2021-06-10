@@ -7,6 +7,7 @@ import { Marginer } from "../Marginer";
 import { FormControlLabel, Radio } from "@material-ui/core";
 import { Formik, useField } from "formik";
 import { db } from "../../firebase";
+import { useAuth } from "../contexts/AuthContext";
 const Backdrop = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   width: 2000px;
@@ -149,6 +150,7 @@ const RadioComponent = ({ label, ...props }) => {
 const types = ["Food", "Object", "Other"]; //Available form options
 
 export const PostModal = ({ showPostModal, setShowPostModal }) => {
+  const { currentUser } = useAuth();
   return (
     <AnimatePresence>
       {showPostModal && (
@@ -181,7 +183,14 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
             <Marginer direction="vertical" margin={30}></Marginer>
 
             <Formik
-              initialValues={{ title: "", city: "", address: "", description: "", typeOfOffer: "" }}
+              initialValues={{
+                title: "",
+                city: "",
+                address: "",
+                description: "",
+                typeOfOffer: "",
+                offeredBy: `${currentUser.email}`,
+              }}
               onSubmit={async (data, { setSubmitting }) => {
                 setSubmitting(true);
                 //make async call

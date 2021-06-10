@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Marginer } from "../Marginer";
 import { Container, HeaderContainer, SimpleRow, Title, Ico, SimpleColumn } from "./dashboardContent";
-import { st } from "../../firebase";
+import { storage } from "../../firebase";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 const Form = styled.form`
@@ -92,21 +92,34 @@ export const MyAccount = () => {
   const { currentUser } = useAuth();
   const [userImageUrl, setUserImageUrl] = useState();
   const ref = currentUser.email;
-  console.log(ref);
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     console.log("Uploading pic...");
-    await st.ref(`${currentUser.email}`).child(`${currentUser.email}`).put(file);
-    console.log("Uploaded");
+    storage
+      .ref(`${ref}`)
+      .child(`${ref}`)
+      .getDownloadURL()
+      .then(() => storage.ref(`${ref}`).child(`${ref}`).delete())
+      .then(() => storage.ref(`${ref}`).child(`${ref}`).put(file))
+      .then(() => getUserImageUrl())
+      .then(console.log("Profile picture updated"))
+      .catch(async () => {
+        await storage.ref(`${ref}`).child(`${ref}`).put(file);
+        console.log("No previous image detected. Path created");
+        await getUserImageUrl();
+      });
   };
   const getUserImageUrl = () => {
-    st.ref(`${currentUser.email}`)
+    storage
+      .ref(`${currentUser.email}`)
       .child(`${currentUser.email}`)
       .getDownloadURL()
       .then((url) => setUserImageUrl(url))
       .catch(() => {
         console.log("Error getting the image. Using default-image instead");
-        st.ref("default")
+        storage
+          .ref("default")
           .child("defaultProfilePic.svg")
           .getDownloadURL()
           .then((url) => setUserImageUrl(url));

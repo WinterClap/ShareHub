@@ -207,7 +207,7 @@ export const SignIn = () => {
           <Divisor divisorTxt="or sign up with other accounts"></Divisor>
           <SocialMediaContainer>
             <SocialBox to="/LOGINWITHGOOGLE">
-              <SocialImg image={GoogleImg}></SocialImg>{" "}
+              <SocialImg image={GoogleImg}></SocialImg>
             </SocialBox>
           </SocialMediaContainer>
         </SignInContainer>

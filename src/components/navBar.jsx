@@ -3,8 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import SHLogo from "../assets/SHLogo.svg";
+const NavBarContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const NavBarObject = styled.nav`
-  width: 90%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -74,37 +79,39 @@ const MenuContainer = styled.div`
 `;
 export const NavBar = () => {
   return (
-    <NavBarObject>
-      <LogoContainer>
-        <Link to="/">
-          <span>Share </span> <img src={SHLogo} alt="Logo" /> <span> Hub </span>
-        </Link>
-      </LogoContainer>
-      <LinkContainer>
-        <ul>
-          <li>
-            <NavLink to="/featured" activeClassName="activeLink">
-              Featured
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/offers" activeClassName="activeLink">
-              Find Offers
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/post_offer" activeClassName="activeLink">
-              Post Offers
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/signin" activeClassName="activeLink">
-              Sign in
-            </NavLink>
-          </li>
-        </ul>
-      </LinkContainer>
-      <MenuContainer></MenuContainer>
-    </NavBarObject>
+    <NavBarContainer>
+      <NavBarObject>
+        <LogoContainer>
+          <Link to="/">
+            <span>Share </span> <img src={SHLogo} alt="Logo" /> <span> Hub </span>
+          </Link>
+        </LogoContainer>
+        <LinkContainer>
+          <ul>
+            <li>
+              <NavLink to="/featured" activeClassName="activeLink">
+                Featured
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/offers" activeClassName="activeLink">
+                Find Offers
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/post_offer" activeClassName="activeLink">
+                Post Offers
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/signin" activeClassName="activeLink">
+                Sign in
+              </NavLink>
+            </li>
+          </ul>
+        </LinkContainer>
+        <MenuContainer></MenuContainer>
+      </NavBarObject>
+    </NavBarContainer>
   );
 };

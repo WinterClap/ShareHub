@@ -1,8 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AddIco from "../../assets/addIco.svg";
-import { Ico, Section, SimpleRow, Subtitle } from "./dashboardContent";
-
-export const Posts = ({ setShowPostModal }) => {
+import { Column, ColumnHeader, ColumnsContainer, Ico, Section, SimpleRow, Subtitle, Text } from "./dashboardContent";
+import { useAuth } from "../contexts/AuthContext";
+import { db } from "../../firebase";
+export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
+  const { currentUser } = useAuth();
+  const posts = [];
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState();
+  const fetchPosts = async () => {
+    setLoading(true);
+    const response = await db.collection("posts").where("offeredBy", "==", `${currentUser.email}`).get();
+    response.forEach((doc) => posts.push(doc.data()));
+    setData(posts);
+    setLoading(false);
+    updatePostsCounter(posts.length);
+  };
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
     <Section maxHeight="300px">
       <SimpleRow>
@@ -30,6 +46,26 @@ export const Posts = ({ setShowPostModal }) => {
           onClick={() => setShowPostModal(true)}
         ></Ico>
       </SimpleRow>
+      {loading && <Text>LOADING...</Text>}
+      {!loading && (
+        <ColumnsContainer>
+          <Column>
+            <ColumnHeader>Title</ColumnHeader>
+            {data.map((post) => (
+              <Text key={post.title}>{post.title}</Text>
+            ))}
+          </Column>
+          <Column>
+            <ColumnHeader>Description</ColumnHeader>
+            {data.map((post) => (
+              <Text key={post.description}>{post.description}</Text>
+            ))}
+          </Column>
+          <Column>
+            <ColumnHeader>Column3</ColumnHeader>
+          </Column>
+        </ColumnsContainer>
+      )}
     </Section>
   );
 };
