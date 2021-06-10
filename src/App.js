@@ -8,26 +8,29 @@ import { AuthProvider } from "./components/contexts/AuthContext";
 import { PrivateRoute } from "./components/privateRoute";
 import { NotFoundPage } from "./components/notFoundPage";
 import { PasswordReset } from "./components/PasswordReset";
+import { UserProvider } from "./components/contexts/UserContext";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <HomePage></HomePage>
-          </Route>
-          <Route path="/signin">
-            <SignIn></SignIn>
-          </Route>
-          <Route path="/signup">
-            <SignUp></SignUp>
-          </Route>
-          <PrivateRoute path="/dashboard" component={Dashboard}></PrivateRoute>
-          <Route path="/password-reset" component={PasswordReset} />
-          <Route component={NotFoundPage}></Route>
-        </Switch>
-      </Router>
+      <UserProvider>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <HomePage></HomePage>
+            </Route>
+            <Route path="/signin">
+              <SignIn></SignIn>
+            </Route>
+            <Route path="/signup">
+              <SignUp></SignUp>
+            </Route>
+            <PrivateRoute path="/dashboard" component={Dashboard}></PrivateRoute>
+            <Route path="/password-reset" component={PasswordReset} />
+            <Route component={NotFoundPage}></Route>
+          </Switch>
+        </Router>
+      </UserProvider>
     </AuthProvider>
   );
 }

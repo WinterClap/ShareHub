@@ -10,6 +10,7 @@ import logoutIco from "../../assets/logoutIco.svg";
 import SHLogo from "../../assets/SHLogo.svg";
 
 import { useAuth } from "../contexts/AuthContext";
+import { useUser } from "../contexts/UserContext";
 
 const Container = styled.aside`
   margin: 20px;
@@ -146,11 +147,8 @@ export const DashboardNavBar = () => {
   let { path, url } = useRouteMatch();
   const history = useHistory();
   const { logout, currentUser } = useAuth();
-  const [userImageUrl, setUserImageUrl] = useState();
+  const { userImageUrl } = useUser();
 
-  const getUserImageUrl = (imageUrl) => {
-    return setUserImageUrl(imageUrl);
-  };
   const handleLogout = async () => {
     try {
       await logout();
