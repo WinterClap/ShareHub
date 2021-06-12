@@ -9,10 +9,13 @@ import { PostModal } from "./postModal";
 import { Offers } from "./offers";
 import { Posts } from "./posts";
 import { Marginer } from "../Marginer";
+import { ReservedItems } from "./reservedItems";
 export const SimpleColumn = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  width: ${(props) => props.width || "auto"};
+  padding: ${(props) => props.padding || "auto"};
   justify-content: ${(props) => props.justifyContent || "center"};
   align-items: ${(props) => props.alignItems || "center"};
 `;
@@ -74,6 +77,7 @@ export const Section = styled.section`
   border-radius: 25px;
   position: relative;
   overflow: auto;
+  width: ${(props) => props.width || "auto"};
   max-height: ${(props) => props.maxHeight || "auto"};
   &:not(:last-of-type) {
     margin-bottom: 25px;
@@ -110,13 +114,14 @@ const Counter = styled.h2`
 export const ColumnsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: ${(props) => props.width || "auto"};
 `;
 export const ColumnHeader = styled.h3`
   font-size: 1.1rem;
@@ -167,12 +172,16 @@ export const DashboardContent = () => {
   const [showPostModal, setShowPostModal] = useState(false);
   const [offersCounter, setOffersCounter] = useState(0);
   const [postsCounter, setPostsCounter] = useState(0);
+  const [giftsCounter, setGiftsCounter] = useState(0);
 
   const updateOffersCounter = (value) => {
     return setOffersCounter(value);
   };
   const updatePostsCounter = (value) => {
     return setPostsCounter(value);
+  };
+  const updateGiftsCounter = (value) => {
+    return setGiftsCounter(value);
   };
   return (
     <>
@@ -205,9 +214,23 @@ export const DashboardContent = () => {
               <CounterSectionSubtitle>Posts</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
+          <CounterSection>
+            {/*TODO: Change this image*/}
+            <Ico width={"100%"} height={"100px"} image={PostsIco}></Ico>
+            <SimpleColumn>
+              <Counter>{giftsCounter}</Counter>
+              <CounterSectionSubtitle>Gifts</CounterSectionSubtitle>
+            </SimpleColumn>
+          </CounterSection>
         </CounterSectionContainer>
-        <Offers updateOffersCounter={updateOffersCounter}></Offers>
-        <Posts updatePostsCounter={updatePostsCounter} setShowPostModal={setShowPostModal}></Posts>
+        <SimpleRow width="100%">
+          <SimpleColumn padding="0 100px" width="100%">
+            <Offers updateOffersCounter={updateOffersCounter}></Offers>
+            <Marginer direction="vertical" margin={30}></Marginer>
+            <Posts updatePostsCounter={updatePostsCounter} setShowPostModal={setShowPostModal}></Posts>
+          </SimpleColumn>
+          <ReservedItems updateGiftsCounter={updateGiftsCounter}></ReservedItems>
+        </SimpleRow>
       </Container>
     </>
   );

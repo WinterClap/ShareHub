@@ -5,24 +5,30 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from "../../firebase";
 export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
   const { currentUser } = useAuth();
-  const posts = [];
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  let posts = [];
   const fetchPosts = async () => {
     setLoading(true);
-    const response = await db.collection("posts").where("offeredBy", "==", `${currentUser.email}`).get();
-    response.forEach((doc) => posts.push(doc.data()));
-    setData(posts);
+    db.collection("posts")
+      .where("offeredBy", "==", `${currentUser.email}`)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          posts.push({ ...doc.data(), id: doc.id });
+        });
+        setData(posts);
+        updatePostsCounter(posts.length);
+        posts = [];
+      });
     setLoading(false);
-    updatePostsCounter(posts.length);
   };
   useEffect(() => {
     fetchPosts();
   }, []);
   return (
-    <Section maxHeight="300px">
+    <Section width={"100%"} maxHeight="300px">
       <SimpleRow>
-        <Subtitle> Posts </Subtitle>
+        <Subtitle> My Posts </Subtitle>
         <Ico
           initial={{ scale: 1 }}
           whileHover={{
@@ -59,14 +65,17 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
                   <Text key={post.title}>{post.title}</Text>
                 ))}
               </Column>
-              <Column>
+              <Column width="50%">
                 <ColumnHeader>Description</ColumnHeader>
                 {data.map((post) => (
                   <Text key={post.description}>{post.description}</Text>
                 ))}
               </Column>
               <Column>
-                <ColumnHeader>Column3</ColumnHeader>
+                <ColumnHeader>Status</ColumnHeader>
+                {data.map((post) => (
+                  <Text key={post.id}>{post.status}</Text>
+                ))}
               </Column>
             </ColumnsContainer>
           )}

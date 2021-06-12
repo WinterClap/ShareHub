@@ -28,8 +28,8 @@ const backdrop = {
 };
 
 const DialogContainer = styled.div`
-  width: 50vw;
-  height: 65%;
+  width: 850px;
+  height: 630px;
   border-radius: 20px;
   padding: 25px;
   background-color: #fff;
@@ -138,7 +138,7 @@ const Button = styled(motion.button)`
   outline: none;
   border: none;
   cursor: ${(props) => (props.disabled === true ? "not-allowed" : "pointer")};
-  background-color: ${(props) => (props.disabled === true ? "#f38f81" : "#f4442e")};
+  background-color: ${(props) => (props.disabled === true ? "#f38f81" : "#bb1600")};
   transition: background-color 100ms ease-in-out;
 `;
 
@@ -190,6 +190,8 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                 description: "",
                 typeOfOffer: "",
                 offeredBy: `${currentUser.email}`,
+                status: "Available",
+                takenBy: "",
               }}
               onSubmit={async (data, { setSubmitting }) => {
                 setSubmitting(true);

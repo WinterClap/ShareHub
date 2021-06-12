@@ -85,7 +85,6 @@ const LabelInputFile = styled(motion.label)`
   cursor: pointer;
 `;
 
-//TODO: Update image when needed (remove previous pic)
 export const MyAccount = () => {
   const { handleFileChange, getUserImageUrl, userImageUrl } = useUser();
 

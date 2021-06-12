@@ -173,11 +173,10 @@ export const DashboardNavBar = () => {
               <CategoryIcon square image={dashboardIco}></CategoryIcon>
               <CategoryTitle
                 to={`${url}/content`}
-                activeClassName="activeDashboardLink"
                 activeStyle={{
-                  boxShadow: "0px 10px 10px rgba(244,68,46,0.2)",
+                  boxShadow: "0px 10px 10px #bb16004c",
                   color: "#fff",
-                  backgroundColor: "#F4442E",
+                  backgroundColor: "#bb1600",
                 }}
               >
                 Dashboard
@@ -189,11 +188,10 @@ export const DashboardNavBar = () => {
               <CategoryTitle
                 to={`${url}/myaccount`}
                 activeStyle={{
-                  boxShadow: "0px 10px 10px rgba(244,68,46,0.2)",
+                  boxShadow: "0px 10px 10px #bb16004c",
                   color: "#fff",
-                  backgroundColor: "#F4442E",
+                  backgroundColor: "#bb1600",
                 }}
-                activeClassName="activeDashboardLink"
               >
                 My account
               </CategoryTitle>
