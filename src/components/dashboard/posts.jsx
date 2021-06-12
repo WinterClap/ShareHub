@@ -48,23 +48,29 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
       </SimpleRow>
       {loading && <Text>LOADING...</Text>}
       {!loading && (
-        <ColumnsContainer>
-          <Column>
-            <ColumnHeader>Title</ColumnHeader>
-            {data.map((post) => (
-              <Text key={post.title}>{post.title}</Text>
-            ))}
-          </Column>
-          <Column>
-            <ColumnHeader>Description</ColumnHeader>
-            {data.map((post) => (
-              <Text key={post.description}>{post.description}</Text>
-            ))}
-          </Column>
-          <Column>
-            <ColumnHeader>Column3</ColumnHeader>
-          </Column>
-        </ColumnsContainer>
+        <>
+          {posts.length !== 0 ? (
+            <Text>No hay posts</Text>
+          ) : (
+            <ColumnsContainer>
+              <Column>
+                <ColumnHeader>Title</ColumnHeader>
+                {data.map((post) => (
+                  <Text key={post.title}>{post.title}</Text>
+                ))}
+              </Column>
+              <Column>
+                <ColumnHeader>Description</ColumnHeader>
+                {data.map((post) => (
+                  <Text key={post.description}>{post.description}</Text>
+                ))}
+              </Column>
+              <Column>
+                <ColumnHeader>Column3</ColumnHeader>
+              </Column>
+            </ColumnsContainer>
+          )}
+        </>
       )}
     </Section>
   );

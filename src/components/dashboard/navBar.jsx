@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink, useHistory, useRouteMatch } from "react-router-dom";
+import { NavLink, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { Marginer } from "../Marginer";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import SHLogo from "../../assets/SHLogo.svg";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useUser } from "../contexts/UserContext";
+import { useEffect } from "react";
 
 const Container = styled.aside`
   margin: 20px;
@@ -34,12 +35,10 @@ const Box = styled.div``;
 const AsideNavBar = styled.nav`
   padding: 30px;
   border-radius: 20px;
-  border: 1px solid black;
 `;
 const Header = styled.header`
   margin-top: 10px;
   width: 100%;
-  border: 1px solid black;
   color: #ff1e00;
   img {
     display: block;
@@ -55,7 +54,6 @@ const Title = styled.h1`
 `;
 const CategoryContainer = styled.section`
   display: flex;
-  border: 1px solid black;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
@@ -99,11 +97,12 @@ const UserContainer = styled.footer`
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
-  width: 250px;
-  padding-right: 30px;
+  width: 220px;
+  padding: 0 30px;
   border-radius: 20px;
+  background-color: #fff;
   margin-bottom: 10px;
+  box-shadow: 0px 10px 10px rgba(244, 68, 46, 0.15);
 `;
 
 const UserImage = styled.div`
@@ -114,7 +113,6 @@ const UserImage = styled.div`
   border-radius: 50%;
   height: 50px;
   width: 50px;
-  border: 1px solid black;
 `;
 const UserWrapper = styled.div``;
 const UserDimmedText = styled.h4`
@@ -148,7 +146,7 @@ export const DashboardNavBar = () => {
   const history = useHistory();
   const { logout, currentUser } = useAuth();
   const { userImageUrl } = useUser();
-
+  const { getUserImageUrl } = useUser();
   const handleLogout = async () => {
     try {
       await logout();
@@ -158,7 +156,9 @@ export const DashboardNavBar = () => {
       console.log(error);
     }
   };
-
+  useEffect(() => {
+    getUserImageUrl();
+  }, []);
   return (
     <Container>
       <Box>

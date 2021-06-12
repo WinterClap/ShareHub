@@ -37,6 +37,7 @@ export function AuthProvider({ children }) {
     signUp,
     login,
     passwordReset,
+    loading,
   };
 
   return <AuthContext.Provider value={values}>{!loading && children}</AuthContext.Provider>;

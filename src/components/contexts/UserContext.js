@@ -9,9 +9,8 @@ export function useUser() {
 
 export function UserProvider({ children }) {
   const [userImageUrl, setUserImageUrl] = useState();
-
-  const { currentUser } = useAuth();
-  const ref = currentUser.email;
+  const { currentUser, loading } = useAuth();
+  const ref = currentUser ? currentUser.email : "null";
   const getUserImageUrl = () => {
     storage
       .ref(`${currentUser.email}`)
@@ -45,5 +44,5 @@ export function UserProvider({ children }) {
       });
   };
   const values = { handleFileChange, getUserImageUrl, userImageUrl };
-  return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={values}> {!loading && children}</UserContext.Provider>;
 }
