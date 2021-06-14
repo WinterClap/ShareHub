@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Marginer } from "./Marginer/index";
 import ForgotPassImage from "../assets/forgotPasswordImage.svg";

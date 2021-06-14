@@ -7,86 +7,126 @@ import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 export const SectionButton = styled(motion.button)`
   outline: none;
-  padding: 6px;
-  background-color: #57e416;
-  color: #363636;
+  padding: 6px 10px;
+  width: 80px;
+  background-color: ${(props) => props.BgColor || "#57e416"};
+  color: ${(props) => props.color || "#363636"};
   font-size: 1rem;
   font-weight: 600;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   &:first-of-type {
-    margin-top: 15.6px;
+    margin-top: 13.6px;
   }
   &:not(:last-of-type) {
     margin-bottom: 17.6px;
   }
 `;
 
-export const Offers = ({ updateOffersCounter }) => {
+export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery }) => {
   const { currentUser } = useAuth();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState();
-  const fetchOffers = async () => {
+  const fetchOffers = async (locationQuery) => {
     setLoading(true);
     let posts = [];
-    db.collection("posts")
-      .where("status", "==", "Available")
-      .where("offeredBy", "!=", `${currentUser.email}`)
-      .onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          posts.push({ ...doc.data(), id: doc.id });
+    if (locationQuery !== "") {
+      db.collection("posts")
+        .where("status", "==", "Available")
+        .where("offeredBy", "!=", `${currentUser.email}`)
+        .where("city", "==", `${locationQuery}`)
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            posts.push({ ...doc.data(), id: doc.id });
+          });
+          setData(posts);
+          updateOffersCounter(posts.length);
+          posts = [];
         });
-        setData(posts);
-        updateOffersCounter(posts.length);
-        posts = [];
-      });
+    } else {
+      db.collection("posts")
+        .where("status", "==", "Available")
+        .where("offeredBy", "!=", `${currentUser.email}`)
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            posts.push({ ...doc.data(), id: doc.id });
+          });
+          setData(posts);
+          updateOffersCounter(posts.length);
+          posts = [];
+        });
+    }
     setLoading(false);
   };
   useEffect(() => {
-    fetchOffers();
-  }, []);
+    fetchOffers(locationQuery);
+  }, [locationQuery]);
 
   const handlePick = async (id) => {
     db.collection("posts")
       .doc(id)
-      .get()
-      .then((doc) =>
-        `${currentUser.email}` == doc.data().offeredBy
-          ? console.log("Iguales !")
-          : db
-              .collection("posts")
-              .doc(id)
-              .update({ status: "Claimed", takenBy: `${currentUser.email}` })
-      );
+      .update({ status: "Claimed", takenBy: `${currentUser.email}` });
   };
 
   return (
     <>
-      <Section width={"100%"} maxHeight="400px">
+      <Section minWidth="200px" width={"100%"} maxHeight="400px">
         <SimpleRow width="100%" backgroundColor="#fff">
-          <Subtitle> Available offers </Subtitle>
+          {locationQuery !== "" && (
+            <>
+              <Subtitle fontSize="1.5rem"> Available offers in "{locationQuery}" city/town</Subtitle>
+              <SectionButton
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #f89191" }}
+                BgColor="#e02f37"
+                color="#fff"
+                onClick={() => {
+                  return setLocationQuery("");
+                }}
+              >
+                Reset
+              </SectionButton>
+            </>
+          )}
+          {locationQuery == "" && <Subtitle> Available offers</Subtitle>}
         </SimpleRow>
         <Marginer direction="vertical" margin={10}></Marginer>
         {loading && <Text>LOADING...</Text>}
+        {/* TODO: fix the UI rows here. */}
         {!loading && (
           <ColumnsContainer>
             <Column>
               <ColumnHeader>Title</ColumnHeader>
               {data.map((post) => (
-                <Text key={post.title}>{post.title}</Text>
+                <Text key={`OFFER:${post.id}:${post.title}`}>{post.title}</Text>
               ))}
             </Column>
             <Column width="50%">
               <ColumnHeader>Description</ColumnHeader>
               {data.map((post) => (
-                <Text key={post.description}>{post.description}</Text>
+                <Text key={`OFFER:${post.id}:${post.description}`}>{post.description}</Text>
               ))}
             </Column>
+            <Column>
+              <ColumnHeader>City</ColumnHeader>
+              {data.map((post) => (
+                <Text key={`OFFER:${post.id}:${post.city}`}>{post.city}</Text>
+              ))}
+            </Column>
+            <Marginer direction="horizontal" margin={20}></Marginer>
+            <Column>
+              <ColumnHeader>Type</ColumnHeader>
+              {data.map((post) => (
+                <Text key={`OFFER:${post.id}:${post.typeOfOffer}`}>{post.typeOfOffer}</Text>
+              ))}
+            </Column>
+            <Marginer direction="horizontal" margin={20}></Marginer>
             <Column>
               <ColumnHeader>Pick</ColumnHeader>
               {data.map((post) => (
                 <SectionButton
+                  key={`OFFER:${post.id}:BUTTON`}
                   onClick={() => handlePick(post.id)}
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #88f855" }}

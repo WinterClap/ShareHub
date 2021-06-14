@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import OffersIco from "../../assets/offersIco.svg";
 import PostsIco from "../../assets/postsIcon.svg";
+import GiftsIco from "../../assets/GiftsIco.svg";
 import SearchButton from "../../assets/searchButton.svg";
-
 import { motion } from "framer-motion";
 import { PostModal } from "./postModal";
 import { Offers } from "./offers";
@@ -21,6 +21,7 @@ export const SimpleColumn = styled.div`
 `;
 export const SimpleRow = styled.div`
   display: flex;
+  flex-wrap: ${(props) => props.wrap || "no-wrap"};
   position: ${(props) => props.pos || "static"};
   z-index: 10;
   ${(props) => (props.position === "static" ? "top: 0px;" : "")};
@@ -35,6 +36,11 @@ export const Title = styled.h1`
   font-weight: 700;
   margin: 0;
   color: #f4442e;
+`;
+
+export const SectionText = styled.p`
+  font-size: 3rem;
+  font-weight: 400;
 `;
 export const HeaderContainer = styled.div`
   width: 100%;
@@ -68,7 +74,7 @@ export const Ico = styled(motion.div)`
   }
 `;
 export const Subtitle = styled.h2`
-  font-size: 2rem;
+  font-size: ${(props) => props.fontSize || "2rem"};
   font-weight: 500;
 `;
 export const Section = styled.section`
@@ -77,6 +83,7 @@ export const Section = styled.section`
   border-radius: 25px;
   position: relative;
   overflow: auto;
+  min-width: ${(props) => props.minWidth || "auto"};
   width: ${(props) => props.width || "auto"};
   max-height: ${(props) => props.maxHeight || "auto"};
   &:not(:last-of-type) {
@@ -87,6 +94,7 @@ const CounterSectionContainer = styled.section`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const CounterSection = styled.div`
@@ -120,7 +128,7 @@ export const Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: ${(props) => props.alignItems || "center"};
   width: ${(props) => props.width || "auto"};
 `;
 export const ColumnHeader = styled.h3`
@@ -173,7 +181,8 @@ export const DashboardContent = () => {
   const [offersCounter, setOffersCounter] = useState(0);
   const [postsCounter, setPostsCounter] = useState(0);
   const [giftsCounter, setGiftsCounter] = useState(0);
-
+  const [locationQuery, setLocationQuery] = useState("");
+  let location = "";
   const updateOffersCounter = (value) => {
     return setOffersCounter(value);
   };
@@ -183,6 +192,11 @@ export const DashboardContent = () => {
   const updateGiftsCounter = (value) => {
     return setGiftsCounter(value);
   };
+
+  const handleLocationSearch = () => {
+    setLocationQuery(location);
+    document.getElementById("searchLocationInput").value = "";
+  };
   return (
     <>
       <Container>
@@ -190,11 +204,18 @@ export const DashboardContent = () => {
         <HeaderContainer>
           <Title>Posts & Offers</Title>
           <InputContainerHeader>
-            <InputHeader whileFocus={{ scale: 0.99 }} placeholder="Enter your location"></InputHeader>
+            <InputHeader
+              id="searchLocationInput"
+              whileFocus={{ scale: 0.99 }}
+              placeholder="Enter your location"
+              onChange={(e) => {
+                return (location = e.target.value);
+              }}
+            ></InputHeader>
             <ImageBoxHeader
               whileHover={{ scale: 0.95, transition: 1 }}
               whileTap={{ scale: 1.05, transition: 1 }}
-              type="submit"
+              onClick={() => handleLocationSearch()}
             ></ImageBoxHeader>
           </InputContainerHeader>
         </HeaderContainer>
@@ -215,21 +236,25 @@ export const DashboardContent = () => {
             </SimpleColumn>
           </CounterSection>
           <CounterSection>
-            {/*TODO: Change this image*/}
-            <Ico width={"100%"} height={"100px"} image={PostsIco}></Ico>
+            <Ico width={"100%"} height={"100px"} image={GiftsIco}></Ico>
             <SimpleColumn>
               <Counter>{giftsCounter}</Counter>
               <CounterSectionSubtitle>Gifts</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
         </CounterSectionContainer>
-        <SimpleRow width="100%">
+        <SimpleRow wrap="wrap" width="100%">
           <SimpleColumn padding="0 100px" width="100%">
-            <Offers updateOffersCounter={updateOffersCounter}></Offers>
+            <Offers
+              setLocationQuery={setLocationQuery}
+              locationQuery={locationQuery}
+              updateOffersCounter={updateOffersCounter}
+            ></Offers>
             <Marginer direction="vertical" margin={30}></Marginer>
             <Posts updatePostsCounter={updatePostsCounter} setShowPostModal={setShowPostModal}></Posts>
+            <Marginer direction="vertical" margin={30}></Marginer>
+            <ReservedItems updateGiftsCounter={updateGiftsCounter}></ReservedItems>
           </SimpleColumn>
-          <ReservedItems updateGiftsCounter={updateGiftsCounter}></ReservedItems>
         </SimpleRow>
       </Container>
     </>

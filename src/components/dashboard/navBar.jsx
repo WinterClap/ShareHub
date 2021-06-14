@@ -97,8 +97,8 @@ const UserContainer = styled.footer`
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  width: 220px;
   padding: 0 30px;
+  width: 230px;
   border-radius: 20px;
   background-color: #fff;
   margin-bottom: 10px;
@@ -121,7 +121,7 @@ const UserDimmedText = styled.h4`
   color: #8f8f8f;
 `;
 const UserText = styled.h4`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
 `;
 

@@ -142,9 +142,9 @@ const Button = styled(motion.button)`
   transition: background-color 100ms ease-in-out;
 `;
 
-const RadioComponent = ({ label, ...props }) => {
+const RadioComponent = ({ key, label, ...props }) => {
   const [field] = useField(props);
-  return <FormControlLabel {...field} control={<Radio />} label={label} />;
+  return <FormControlLabel {...field} key={key} control={<Radio />} label={label} />;
 };
 
 const types = ["Food", "Object", "Other"]; //Available form options
@@ -248,6 +248,7 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                           {types.map((elem) => {
                             return (
                               <RadioComponent
+                                key={elem}
                                 name="typeOfOffer"
                                 type="radio"
                                 value={elem}

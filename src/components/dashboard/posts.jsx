@@ -3,6 +3,7 @@ import AddIco from "../../assets/addIco.svg";
 import { Column, ColumnHeader, ColumnsContainer, Ico, Section, SimpleRow, Subtitle, Text } from "./dashboardContent";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../../firebase";
+import { SectionButton } from "./offers";
 export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,11 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  const handleCancel = async (id) => {
+    console.log("Removing: " + id);
+    db.collection("posts").doc(id).delete();
+  };
   return (
     <Section width={"100%"} maxHeight="300px">
       <SimpleRow>
@@ -55,6 +61,7 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
       {loading && <Text>LOADING...</Text>}
       {!loading && (
         <>
+          {/* TODO: posts.length is always 0. Fix this functionality */}
           {posts.length !== 0 ? (
             <Text>No hay posts</Text>
           ) : (
@@ -62,19 +69,28 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
               <Column>
                 <ColumnHeader>Title</ColumnHeader>
                 {data.map((post) => (
-                  <Text key={post.title}>{post.title}</Text>
+                  <Text key={`POST:${post.id}:${post.title}`}>{post.title}</Text>
                 ))}
               </Column>
               <Column width="50%">
                 <ColumnHeader>Description</ColumnHeader>
                 {data.map((post) => (
-                  <Text key={post.description}>{post.description}</Text>
+                  <Text key={`POST:${post.id}:${post.description}`}>{post.description}</Text>
                 ))}
               </Column>
               <Column>
-                <ColumnHeader>Status</ColumnHeader>
+                <ColumnHeader>Cancel</ColumnHeader>
                 {data.map((post) => (
-                  <Text key={post.id}>{post.status}</Text>
+                  <SectionButton
+                    key={`POST:${post.id}:BUTTON`}
+                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #f89191" }}
+                    BgColor="#e02f37"
+                    color="#fff"
+                    onClick={() => handleCancel(post.id)}
+                  >
+                    Cancel
+                  </SectionButton>
                 ))}
               </Column>
             </ColumnsContainer>
