@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import { Title, Ico, SimpleRow, SimpleColumn } from "./dashboardContent";
@@ -8,14 +8,14 @@ import { FormControlLabel, Radio } from "@material-ui/core";
 import { Formik, useField } from "formik";
 import { db } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
-const Backdrop = styled(motion.div)`
+export const Backdrop = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   width: 2000px;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 20;
   border: 10px solid rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -27,9 +27,9 @@ const backdrop = {
   hidden: { opacity: 0 },
 };
 
-const DialogContainer = styled.div`
-  width: 850px;
-  height: 630px;
+export const DialogContainer = styled.div`
+  width: ${(props) => props.width || "850px"};
+  height: ${(props) => props.height || "630px"};
   border-radius: 20px;
   padding: 25px;
   background-color: #fff;

@@ -16,6 +16,7 @@ export const SectionButton = styled(motion.button)`
   border: none;
   border-radius: 20px;
   cursor: pointer;
+
   &:first-of-type {
     margin-top: 13.6px;
   }
@@ -96,7 +97,7 @@ export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery })
         {/* TODO: fix the UI rows here. */}
         {!loading && (
           <ColumnsContainer>
-            <Column>
+            <Column width="20%">
               <ColumnHeader>Title</ColumnHeader>
               {data.map((post) => (
                 <Text key={`OFFER:${post.id}:${post.title}`}>{post.title}</Text>

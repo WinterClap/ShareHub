@@ -127,8 +127,9 @@ export const ColumnsContainer = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: ${(props) => props.alignItems || "center"};
+  justify-content: stretch;
+  border: 1px solid black;
+  align-items: ${(props) => props.alignItems || "flex-start"};
   width: ${(props) => props.width || "auto"};
 `;
 export const ColumnHeader = styled.h3`
