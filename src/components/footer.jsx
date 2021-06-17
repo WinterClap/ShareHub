@@ -1,21 +1,45 @@
 import styled from "styled-components";
 import React from "react";
-
-const Section = styled.section`
+import { SimpleColumn } from "./dashboard/dashboardContent";
+const FooterBox = styled.footer`
   width: 100%;
-  background-color: #020122;
+  background-color: #1b0000;
   color: #fff;
+  font-weight: 500;
+  margin: 0;
+  font-size: 1rem;
+  padding: 40px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  a {
+    margin-top: 10px;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #f4442e;
+  }
 `;
 
 export const Footer = () => {
   return (
-    <Section>
-      <div>
-        Icons from
-        <a href="https://www.flaticon.com/" title="Flaticon">
-          www.flaticon.com
-        </a>
-      </div>
-    </Section>
+    <FooterBox>
+      <Container>
+        <SimpleColumn>
+          <p>Icons from</p>
+          <a href="https://www.flaticon.com/" title="Flaticon">
+            Flaticon
+          </a>
+        </SimpleColumn>
+        <SimpleColumn>
+          <p>ShareHub</p>
+        </SimpleColumn>
+      </Container>
+    </FooterBox>
   );
 };

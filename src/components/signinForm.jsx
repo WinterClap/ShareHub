@@ -82,7 +82,7 @@ export const Button = styled(motion.button)`
 export const Input = styled(motion.input)`
   padding: 20px 40px;
   font-size: 1rem;
-  width: 60%;
+  width: 90%;
   border-radius: 25px;
   background-color: #f4f4f4;
   border: none;
@@ -97,7 +97,7 @@ export const Input = styled(motion.input)`
     margin-top: 20px;
   }
   &:last-of-type {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -125,11 +125,11 @@ const Box = styled.div`
 
   border: 1px solid black;
 `;
-const Divisor = () => {
+const Divisor = ({ text }) => {
   return (
     <ConstDivisorContainer>
       <Box right={"10px"}></Box>
-      <DivisorText>or sign up with other accounts</DivisorText>
+      <DivisorText>{text}</DivisorText>
       <Box left={"10px"}></Box>
     </ConstDivisorContainer>
   );
@@ -204,12 +204,7 @@ export const SignIn = () => {
           <DimmedTextLink color="#F4442E" to="/password-reset">
             Forgot password?
           </DimmedTextLink>
-          <Divisor divisorTxt="or sign up with other accounts"></Divisor>
-          <SocialMediaContainer>
-            <SocialBox to="/LOGINWITHGOOGLE">
-              <SocialImg image={GoogleImg}></SocialImg>
-            </SocialBox>
-          </SocialMediaContainer>
+          <Divisor divisorTxt=""></Divisor>
         </SignInContainer>
       </Column>
       <Column>

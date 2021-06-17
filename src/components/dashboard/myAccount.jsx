@@ -106,21 +106,6 @@ export const MyAccount = () => {
         <InputFile accept="image/*" onChange={handleFileChange} id="inputFile" name="inputFile" type="file"></InputFile>
       </SimpleColumn>
       <Marginer direction="vertical" margin={"60px"}></Marginer>
-      <SimpleRow justifyContent="space-around">
-        <Form onSubmit={() => console.log("saving...")}>
-          <SimpleRow>
-            <SimpleColumn>
-              <Label htmlFor="firstName">First Name</Label>
-              <Input id="firstName" placeholder="First Name"></Input>
-              <Label htmlFor="lastName"> Last Name</Label>
-              <Input id="lastName" placeholder="Last Name"></Input>
-            </SimpleColumn>
-          </SimpleRow>
-          <Button fontSize="2.2rem" height="100px" width="200px" type="submit">
-            Save
-          </Button>
-        </Form>
-      </SimpleRow>
     </Container>
   );
 };

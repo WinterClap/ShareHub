@@ -13,27 +13,30 @@ const ColorText = styled.p`
   color: #bb1600;
 `;
 export const ModalInfo = ({ id, showAddressModal, setShowAddressModal }) => {
-  const [currentAddress, setCurrentAddress] = useState("");
+  const [data, setData] = useState("");
   const backdrop = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
   };
-  const getAddress = async (id) => {
-    db.collection("posts")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        setCurrentAddress(doc.data());
-      });
-  };
+
   useEffect(() => {
-    getAddress(id);
+    const getAddress = async (id) => {
+      return db
+        .collection("posts")
+        .doc(id)
+        .get()
+        .then((doc) => {
+          setData(doc.data());
+        });
+    };
+    const unsubscribe = getAddress(id);
+    return unsubscribe;
   }, [id]);
   return (
     <AnimatePresence>
       {showAddressModal && (
         <Backdrop variants={backdrop} initial="hidden" animate="visible" exit="hidden">
-          <DialogContainer width="750px" height="200px">
+          <DialogContainer width="750px" height="240px">
             <SimpleRow justifyContent="space-between">
               <Title>Your gift is waiting for you!</Title>
               <Ico
@@ -60,9 +63,12 @@ export const ModalInfo = ({ id, showAddressModal, setShowAddressModal }) => {
             </SimpleRow>
 
             <Marginer direction="vertical" margin={30}></Marginer>
-            <ColorText>
-              Address: <Text>{currentAddress && currentAddress.address}</Text>
-            </ColorText>
+            <SimpleRow justifyContent="space-around">
+              <ColorText>Address:</ColorText>
+              <Text>{data && data.address}</Text>
+              <ColorText>Type:</ColorText>
+              <Text>{data && data.typeOfOffer}</Text>
+            </SimpleRow>
           </DialogContainer>
         </Backdrop>
       )}

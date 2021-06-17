@@ -29,7 +29,6 @@ export const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const usernameRef = useRef();
   const { signUp } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState();
@@ -76,11 +75,10 @@ export const SignUp = () => {
               ref={passwordConfirmRef}
             ></Input>
 
-            <Input required type="text" placeholder="Username" name="username" ref={usernameRef}></Input>
             {error !== "" && (
               <>
                 <ErrorTxt>{error}</ErrorTxt>
-                <Marginer direction="vertical" margin={20}></Marginer>
+                <Marginer direction="vertical" margin={10}></Marginer>
               </>
             )}
             <Button disable={loading} whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.05 }} type="submit">

@@ -9,22 +9,26 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   let posts = [];
-  const fetchPosts = async () => {
-    setLoading(true);
-    db.collection("posts")
-      .where("offeredBy", "==", `${currentUser.email}`)
-      .onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          posts.push({ ...doc.data(), id: doc.id });
-        });
-        setData(posts);
-        updatePostsCounter(posts.length);
-        posts = [];
-      });
-    setLoading(false);
-  };
+
   useEffect(() => {
+    let unsubscribe;
+    const fetchPosts = async () => {
+      setLoading(true);
+      unsubscribe = db
+        .collection("posts")
+        .where("offeredBy", "==", `${currentUser.email}`)
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            posts.push({ ...doc.data(), id: doc.id });
+          });
+          setData(posts);
+          updatePostsCounter(posts.length);
+          posts = [];
+        });
+      setLoading(false);
+    };
     fetchPosts();
+    return unsubscribe;
   }, []);
 
   const handleCancel = async (id) => {
@@ -61,39 +65,41 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
       {loading && <Text>LOADING...</Text>}
       {!loading && (
         <>
-          {/* TODO: posts.length is always 0. Fix this functionality */}
           {posts.length !== 0 ? (
             <Text>No hay posts</Text>
           ) : (
-            <ColumnsContainer>
-              <Column>
-                <ColumnHeader>Title</ColumnHeader>
-                {data.map((post) => (
-                  <Text key={`POST:${post.id}:${post.title}`}>{post.title}</Text>
-                ))}
-              </Column>
-              <Column width="50%">
-                <ColumnHeader>Description</ColumnHeader>
-                {data.map((post) => (
-                  <Text key={`POST:${post.id}:${post.description}`}>{post.description}</Text>
-                ))}
-              </Column>
-              <Column>
-                <ColumnHeader>Cancel</ColumnHeader>
-                {data.map((post) => (
+            <Column justifyContent="stretch">
+              <SimpleRow padding="0 20px" borderRadius="20px" width="100%">
+                <ColumnHeader flexBasis="10%">Title</ColumnHeader>
+                <ColumnHeader flexBasis="40%">Description</ColumnHeader>
+                <ColumnHeader flexBasis="10%">Type</ColumnHeader>
+                <ColumnHeader flexBasis="10%">Cancel</ColumnHeader>
+              </SimpleRow>
+              {data.map((post, i) => (
+                <SimpleRow padding="0 20px" borderRadius="20px" key={`OFFER:${post.id}:${i}`} BgColor={i} width="100%">
+                  <Text flexBasis="10%" key={`POST_TITLE:${post.id}:${post.title}`}>
+                    {post.title}
+                  </Text>
+                  <Text flexBasis="40%" key={`POST_DESCRIPTION:${post.id}:${post.description}`}>
+                    {post.description}
+                  </Text>
+                  <Text flexBasis="10%" key={`POST_TYPEOFOFFER:${post.id}:${post.typeOfOffer}`}>
+                    {post.typeOfOffer}
+                  </Text>
                   <SectionButton
-                    key={`POST:${post.id}:BUTTON`}
-                    whileTap={{ scale: 0.95 }}
-                    whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #f89191" }}
+                    flexBasis="10%"
+                    key={`POST_BUTTON:${post.id}`}
+                    onClick={() => handleCancel(post.id)}
                     BgColor="#e02f37"
                     color="#fff"
-                    onClick={() => handleCancel(post.id)}
+                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #f89191" }}
                   >
                     Cancel
                   </SectionButton>
-                ))}
-              </Column>
-            </ColumnsContainer>
+                </SimpleRow>
+              ))}
+            </Column>
           )}
         </>
       )}

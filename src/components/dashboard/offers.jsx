@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 export const SectionButton = styled(motion.button)`
   outline: none;
+  flex-basis: ${(props) => props.flexBasis};
   padding: 6px 10px;
   width: 80px;
   background-color: ${(props) => props.BgColor || "#57e416"};
@@ -16,52 +17,50 @@ export const SectionButton = styled(motion.button)`
   border: none;
   border-radius: 20px;
   cursor: pointer;
-
-  &:first-of-type {
-    margin-top: 13.6px;
-  }
-  &:not(:last-of-type) {
-    margin-bottom: 17.6px;
-  }
 `;
 
 export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery }) => {
   const { currentUser } = useAuth();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState();
-  const fetchOffers = async (locationQuery) => {
-    setLoading(true);
-    let posts = [];
-    if (locationQuery !== "") {
-      db.collection("posts")
-        .where("status", "==", "Available")
-        .where("offeredBy", "!=", `${currentUser.email}`)
-        .where("city", "==", `${locationQuery}`)
-        .onSnapshot((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            posts.push({ ...doc.data(), id: doc.id });
-          });
-          setData(posts);
-          updateOffersCounter(posts.length);
-          posts = [];
-        });
-    } else {
-      db.collection("posts")
-        .where("status", "==", "Available")
-        .where("offeredBy", "!=", `${currentUser.email}`)
-        .onSnapshot((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            posts.push({ ...doc.data(), id: doc.id });
-          });
-          setData(posts);
-          updateOffersCounter(posts.length);
-          posts = [];
-        });
-    }
-    setLoading(false);
-  };
+
   useEffect(() => {
+    let unsubscribe;
+    const fetchOffers = async (locationQuery) => {
+      setLoading(true);
+      let posts = [];
+      if (locationQuery !== "") {
+        unsubscribe = db
+          .collection("posts")
+          .where("status", "==", "Available")
+          .where("offeredBy", "!=", `${currentUser.email}`)
+          .where("city", "==", `${locationQuery}`)
+          .onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              posts.push({ ...doc.data(), id: doc.id });
+            });
+            setData(posts);
+            updateOffersCounter(posts.length);
+            posts = [];
+          });
+      } else {
+        unsubscribe = db
+          .collection("posts")
+          .where("status", "==", "Available")
+          .where("offeredBy", "!=", `${currentUser.email}`)
+          .onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              posts.push({ ...doc.data(), id: doc.id });
+            });
+            setData(posts);
+            updateOffersCounter(posts.length);
+            posts = [];
+          });
+      }
+      setLoading(false);
+    };
     fetchOffers(locationQuery);
+    return unsubscribe;
   }, [locationQuery]);
 
   const handlePick = async (id) => {
@@ -72,7 +71,7 @@ export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery })
 
   return (
     <>
-      <Section minWidth="200px" width={"100%"} maxHeight="400px">
+      <Section minWidth="350px" width={"100%"} maxHeight="400px">
         <SimpleRow width="100%" backgroundColor="#fff">
           {locationQuery !== "" && (
             <>
@@ -94,49 +93,41 @@ export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery })
         </SimpleRow>
         <Marginer direction="vertical" margin={10}></Marginer>
         {loading && <Text>LOADING...</Text>}
-        {/* TODO: fix the UI rows here. */}
         {!loading && (
-          <ColumnsContainer>
-            <Column width="20%">
-              <ColumnHeader>Title</ColumnHeader>
-              {data.map((post) => (
-                <Text key={`OFFER:${post.id}:${post.title}`}>{post.title}</Text>
-              ))}
-            </Column>
-            <Column width="50%">
-              <ColumnHeader>Description</ColumnHeader>
-              {data.map((post) => (
-                <Text key={`OFFER:${post.id}:${post.description}`}>{post.description}</Text>
-              ))}
-            </Column>
-            <Column>
-              <ColumnHeader>City</ColumnHeader>
-              {data.map((post) => (
-                <Text key={`OFFER:${post.id}:${post.city}`}>{post.city}</Text>
-              ))}
-            </Column>
-            <Marginer direction="horizontal" margin={20}></Marginer>
-            <Column>
-              <ColumnHeader>Type</ColumnHeader>
-              {data.map((post) => (
-                <Text key={`OFFER:${post.id}:${post.typeOfOffer}`}>{post.typeOfOffer}</Text>
-              ))}
-            </Column>
-            <Marginer direction="horizontal" margin={20}></Marginer>
-            <Column>
-              <ColumnHeader>Pick</ColumnHeader>
-              {data.map((post) => (
+          <Column justifyContent="stretch">
+            <SimpleRow padding="0 20px" borderRadius="20px" width="100%">
+              <ColumnHeader flexBasis="15%">Title</ColumnHeader>
+              <ColumnHeader flexBasis="40%">Description</ColumnHeader>
+              <ColumnHeader flexBasis="15%">City</ColumnHeader>
+              <ColumnHeader flexBasis="15%">Type</ColumnHeader>
+              <ColumnHeader flexBasis="15%"> Pick</ColumnHeader>
+            </SimpleRow>
+            {data.map((post, i) => (
+              <SimpleRow padding="0 20px" borderRadius="20px" key={`OFFER:${post.id}:${i}`} BgColor={i} width="100%">
+                <Text flexBasis="15%" key={`OFFER_TITLE:${post.id}:${post.title}`}>
+                  {post.title}
+                </Text>
+                <Text flexBasis="40%" key={`OFFER_DESCRIPTION:${post.id}:${post.description}`}>
+                  {post.description}
+                </Text>
+                <Text flexBasis="15%" key={`OFFER_CITY:${post.id}:${post.city}`}>
+                  {post.city}
+                </Text>
+                <Text flexBasis="15%" key={`OFFER_TYPEOFOFFER:${post.id}:${post.typeOfOffer}`}>
+                  {post.typeOfOffer}
+                </Text>
                 <SectionButton
-                  key={`OFFER:${post.id}:BUTTON`}
+                  flexBasis="15%"
+                  key={`OFFER_BUTTON:${post.id}`}
                   onClick={() => handlePick(post.id)}
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ scale: 1.05, boxShadow: "0 5px 5px #88f855" }}
                 >
                   I want it
                 </SectionButton>
-              ))}
-            </Column>
-          </ColumnsContainer>
+              </SimpleRow>
+            ))}
+          </Column>
         )}
       </Section>
     </>

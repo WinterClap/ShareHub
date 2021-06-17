@@ -108,13 +108,26 @@ const InputContainer = styled.div`
     margin-right: 10px;
   }
 `;
-const InputMaker = ({ value, onChange, onBlur, width, required, label, Name, id, placeholder, type = "text" }) => {
+const InputMaker = ({
+  ariaLabel,
+  value,
+  onChange,
+  onBlur,
+  width,
+  required,
+  label,
+  Name,
+  id,
+  placeholder,
+  type = "text",
+}) => {
   return (
     <InputContainer>
       <Label required={required} htmlFor={id}>
         {label}
       </Label>
       <Input
+        aria-label={ariaLabel}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
@@ -147,7 +160,7 @@ const RadioComponent = ({ key, label, ...props }) => {
   return <FormControlLabel {...field} key={key} control={<Radio />} label={label} />;
 };
 
-const types = ["Food", "Object", "Other"]; //Available form options
+const types = ["Food", "Object", "Other"];
 
 export const PostModal = ({ showPostModal, setShowPostModal }) => {
   const { currentUser } = useAuth();
@@ -207,7 +220,9 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                   <SimpleColumn>
                     <SimpleRow width="100%" justifyContent={"space-between"} alignItems={"center"}>
                       <InputMaker
+                        ariaLabel="Title"
                         id="title"
+                        width="100%"
                         required="required"
                         label="Title *"
                         name={"Title"}
@@ -218,10 +233,12 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                       ></InputMaker>
 
                       <InputMaker
+                        ariaLabel="City"
                         id="city"
                         required="required"
                         label="City *"
                         name={"City"}
+                        width="100%"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder={"City or Town"}
@@ -232,7 +249,8 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
 
                     <SimpleRow width="100%" justifyContent={"space-between"} alignItems={"center"}>
                       <InputMaker
-                        width="90%"
+                        ariaLabel="Address"
+                        width="100%"
                         id="address"
                         required="required"
                         label="Address *"
@@ -248,6 +266,7 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                           {types.map((elem) => {
                             return (
                               <RadioComponent
+                                aria-label="Type of offer"
                                 key={elem}
                                 name="typeOfOffer"
                                 type="radio"
@@ -265,10 +284,11 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                       <InputContainer>
                         <Label htmlFor="description">Description</Label>
                         <TextArea
+                          aria-label="Item description"
                           maxLength="500"
                           id="description"
                           height="120px"
-                          width="90%"
+                          width="100%"
                           placeholder="Provide a description of your offer"
                           onBlur={handleBlur}
                           onChange={handleChange}
@@ -277,7 +297,7 @@ export const PostModal = ({ showPostModal, setShowPostModal }) => {
                       </InputContainer>
                     </SimpleRow>
                   </SimpleColumn>
-                  <Marginer direction="vertical" margin={30}></Marginer>
+                  <Marginer direction="vertical" margin={15}></Marginer>
                   <SimpleRow justifyContent="flex-end">
                     <Button
                       disabled={isSubmitting}

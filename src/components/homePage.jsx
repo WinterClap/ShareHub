@@ -3,6 +3,7 @@ import HomeBG from "../assets/SearchMainPage.svg";
 import { Footer } from "./footer";
 import { Header } from "./header";
 import { NavBar } from "./navBar";
+import { ShowCase } from "./showCase";
 
 const HomeSection = styled.header`
   width: 100%;
@@ -29,6 +30,7 @@ export default function HomePage() {
         <ImageContainer>
           <NavBar></NavBar>
           <Header></Header>
+          <ShowCase></ShowCase>
         </ImageContainer>
       </HomeSection>
       <Footer></Footer>

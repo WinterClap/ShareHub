@@ -2,8 +2,9 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
+import { motion } from "framer-motion";
 import SHLogo from "../assets/SHLogo.svg";
-const NavBarContainer = styled.div`
+const NavBarContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +16,6 @@ const NavBarObject = styled.nav`
   align-items: center;
   height: auto;
   margin: 20px 10px;
-  border: 1px solid white;
   ul {
     font-size: 1.25rem;
     font-weight: 500;
@@ -77,9 +77,14 @@ const MenuContainer = styled.div`
   width: 30px;
   height: 30px;
 `;
+
+const navbar = {
+  hidden: { y: -80 },
+  show: { y: 0, transition: { duration: 1.5 } },
+};
 export const NavBar = () => {
   return (
-    <NavBarContainer>
+    <NavBarContainer initial="hidden" animate="show" variants={navbar}>
       <NavBarObject>
         <LogoContainer>
           <Link to="/">
@@ -89,20 +94,11 @@ export const NavBar = () => {
         <LinkContainer>
           <ul>
             <li>
-              <NavLink to="/featured" activeClassName="activeLink">
-                Featured
+              <NavLink to="/dashboard/content" activeClassName="activeLink">
+                Dashboard
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/offers" activeClassName="activeLink">
-                Find Offers
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/post_offer" activeClassName="activeLink">
-                Post Offers
-              </NavLink>
-            </li>
+
             <li>
               <NavLink to="/signin" activeClassName="activeLink">
                 Sign in

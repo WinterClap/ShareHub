@@ -8,7 +8,7 @@ import myAccountIco from "../../assets/myAccount.svg";
 import dashboardIco from "../../assets/dashboard.svg";
 import logoutIco from "../../assets/logoutIco.svg";
 import SHLogo from "../../assets/SHLogo.svg";
-
+import ReactTooltip from "react-tooltip";
 import { useAuth } from "../contexts/AuthContext";
 import { useUser } from "../contexts/UserContext";
 import { useEffect } from "react";
@@ -63,13 +63,14 @@ const CategoryContainer = styled.section`
 const CategoryIcon = styled.div`
   background-size: contain;
   background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
   background-position: center;
   width: 40px;
   height: 40px;
   border-radius: ${(props) => (props.square ? "5px" : "50%")};
 `;
 const CategoryBox = styled.div`
-  width: 160px;
+  width: 180px;
   height: 60px;
   padding: 0px 10px;
   display: flex;
@@ -95,10 +96,10 @@ const CategoryTitle = styled(NavLink)`
 const UserContainer = styled.footer`
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 0 30px;
-  width: 230px;
+  width: 290px;
+  padding: 0 20px;
   border-radius: 20px;
   background-color: #fff;
   margin-bottom: 10px;
@@ -172,6 +173,7 @@ export const DashboardNavBar = () => {
             <CategoryBox>
               <CategoryIcon square image={dashboardIco}></CategoryIcon>
               <CategoryTitle
+                aria-label="Dashboard"
                 to={`${url}/content`}
                 activeStyle={{
                   boxShadow: "0px 10px 10px #bb16004c",
@@ -186,6 +188,7 @@ export const DashboardNavBar = () => {
               <CategoryIcon image={myAccountIco}></CategoryIcon>
 
               <CategoryTitle
+                aria-label="MyAccount"
                 to={`${url}/myaccount`}
                 activeStyle={{
                   boxShadow: "0px 10px 10px #bb16004c",
@@ -205,7 +208,13 @@ export const DashboardNavBar = () => {
           <UserDimmedText>Account</UserDimmedText>
           <UserText>{currentUser.email || "No-User"}</UserText>
         </UserWrapper>
+        <ReactTooltip id="logout" effect="solid">
+          Logout
+        </ReactTooltip>
         <LogoutIco
+          data-tip
+          data-for="logout"
+          aria-label="Logout"
           onClick={handleLogout}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

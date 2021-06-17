@@ -9,7 +9,7 @@ import { PostModal } from "./postModal";
 import { Offers } from "./offers";
 import { Posts } from "./posts";
 import { Marginer } from "../Marginer";
-import { ReservedItems } from "./reservedItems";
+import { Gifts } from "./gifts";
 export const SimpleColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,16 +20,21 @@ export const SimpleColumn = styled.div`
   align-items: ${(props) => props.alignItems || "center"};
 `;
 export const SimpleRow = styled.div`
+  padding: ${(props) => props.padding || "auto"};
   display: flex;
-  flex-wrap: ${(props) => props.wrap || "no-wrap"};
+  flex-wrap: ${(props) => props.wrap || "nowrap"};
   position: ${(props) => props.pos || "static"};
   z-index: 10;
   ${(props) => (props.position === "static" ? "top: 0px;" : "")};
-  background-color: ${(props) => props.backgroundColor || "auto"};
   flex-wrap: nowrap;
   justify-content: ${(props) => props.justifyContent || "space-between"};
   align-items: ${(props) => props.alignItems || "center"};
   width: ${(props) => props.width || "auto"};
+  border-radius: ${(props) => props.borderRadius || "none"};
+  ${(props) =>
+    props.BgColor % 2 !== 0 && typeof props.BgColor == "number"
+      ? "background-color: #bfbfbf86;"
+      : `background-color: ${props.backgroundColor || "null"}`}
 `;
 export const Title = styled.h1`
   font-size: 3rem;
@@ -78,12 +83,12 @@ export const Subtitle = styled.h2`
   font-weight: 500;
 `;
 export const Section = styled.section`
-  padding: 15px 30px 15px 55px;
+  padding: 15px 10px 15px 15px;
   background-color: #fff;
   border-radius: 25px;
   position: relative;
   overflow: auto;
-  min-width: ${(props) => props.minWidth || "auto"};
+  min-width: ${(props) => props.minWidth || "350px"};
   width: ${(props) => props.width || "auto"};
   max-height: ${(props) => props.maxHeight || "auto"};
   &:not(:last-of-type) {
@@ -100,7 +105,7 @@ const CounterSectionContainer = styled.section`
 const CounterSection = styled.div`
   min-width: 200px;
   max-width: 250px;
-  padding: 15px 30px;
+  padding: 15px 25px;
   background-color: #fff;
   border-radius: 25px;
   display: flex;
@@ -127,20 +132,23 @@ export const ColumnsContainer = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
-  border: 1px solid black;
+  justify-content: ${(props) => props.justifyContent || "flex-start"};
   align-items: ${(props) => props.alignItems || "flex-start"};
   width: ${(props) => props.width || "auto"};
 `;
 export const ColumnHeader = styled.h3`
-  font-size: 1.1rem;
-  color: #bfbfbf;
-  font-weight: 400;
+  font-size: 1.2rem;
+  color: #6d6d6d;
+  padding: ${(props) => props.padding || "0 5px"};
+  font-weight: 600;
+  flex-basis: ${(props) => props.flexBasis || "auto"};
 `;
 export const Text = styled.p`
   font-size: 1.1rem;
   color: black;
   font-weight: 400;
+  padding: ${(props) => props.padding || "0 5px"};
+  flex-basis: ${(props) => props.flexBasis || "auto"};
 `;
 
 const InputContainerHeader = styled.div`
@@ -154,8 +162,8 @@ const ImageBoxHeader = styled(motion.button)`
   background-position: center;
   background-size: contain;
   background-image: url(${SearchButton});
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   position: absolute;
   right: 0;
@@ -212,6 +220,7 @@ export const DashboardContent = () => {
               onChange={(e) => {
                 return (location = e.target.value);
               }}
+              onKeyPress={(e) => (e.key === "Enter" ? handleLocationSearch() : "")}
             ></InputHeader>
             <ImageBoxHeader
               whileHover={{ scale: 0.95, transition: 1 }}
@@ -224,28 +233,28 @@ export const DashboardContent = () => {
         <CounterSectionContainer>
           <CounterSection>
             <Ico width={"100%"} height={"100px"} image={OffersIco}></Ico>
-            <SimpleColumn>
+            <SimpleColumn padding="0 8px">
               <Counter>{offersCounter}</Counter>
               <CounterSectionSubtitle>Offers</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
           <CounterSection>
             <Ico width={"100%"} height={"100px"} image={PostsIco}></Ico>
-            <SimpleColumn>
+            <SimpleColumn padding="0 8px">
               <Counter>{postsCounter}</Counter>
               <CounterSectionSubtitle>Posts</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
           <CounterSection>
             <Ico width={"100%"} height={"100px"} image={GiftsIco}></Ico>
-            <SimpleColumn>
+            <SimpleColumn padding="0 8px">
               <Counter>{giftsCounter}</Counter>
               <CounterSectionSubtitle>Gifts</CounterSectionSubtitle>
             </SimpleColumn>
           </CounterSection>
         </CounterSectionContainer>
-        <SimpleRow wrap="wrap" width="100%">
-          <SimpleColumn padding="0 100px" width="100%">
+        <SimpleRow wrap="wrap" width="100%" backgroundColor="#fafafa">
+          <SimpleColumn padding="0 50px" width="100%">
             <Offers
               setLocationQuery={setLocationQuery}
               locationQuery={locationQuery}
@@ -254,7 +263,7 @@ export const DashboardContent = () => {
             <Marginer direction="vertical" margin={30}></Marginer>
             <Posts updatePostsCounter={updatePostsCounter} setShowPostModal={setShowPostModal}></Posts>
             <Marginer direction="vertical" margin={30}></Marginer>
-            <ReservedItems updateGiftsCounter={updateGiftsCounter}></ReservedItems>
+            <Gifts updateGiftsCounter={updateGiftsCounter}></Gifts>
           </SimpleColumn>
         </SimpleRow>
       </Container>
