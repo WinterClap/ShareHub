@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import HomeBG from "../assets/SearchMainPage.svg";
-import { Footer } from "./footer";
+import { Footer } from "./Footer/footer";
 import { Header } from "./header";
 import { NavBar } from "./navBar";
 import { ShowCase } from "./showCase";

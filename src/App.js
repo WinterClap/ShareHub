@@ -12,7 +12,7 @@ import { UserProvider } from "./components/contexts/UserContext";
 
 function App() {
   return (
-    <AuthProvider>
+    <AuthProvider title="AuthProvider">
       <UserProvider>
         <Router>
           <Switch>

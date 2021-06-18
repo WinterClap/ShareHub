@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { SimpleColumn } from "./dashboard/dashboardContent";
+import { SimpleColumn } from "../dashboard/dashboardContent";
 const FooterBox = styled.footer`
   width: 100%;
   background-color: #1b0000;
@@ -28,7 +28,7 @@ const Container = styled.div`
 
 export const Footer = () => {
   return (
-    <FooterBox>
+    <FooterBox title="FooterBox">
       <Container>
         <SimpleColumn>
           <p>Icons from</p>

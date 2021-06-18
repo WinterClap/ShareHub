@@ -57,7 +57,7 @@ export const HeaderContainer = styled.div`
 export const Container = styled.section`
   padding: 30px;
   box-shadow: 0px 0px 15px rgba(15, 15, 15, 0.1);
-  width: calc(100vw - 450px);
+  width: calc(100vw - 380px);
   border-radius: 20px;
   background-color: #fafafa;
   & > * {
@@ -147,6 +147,7 @@ export const Text = styled.p`
   font-size: 1.1rem;
   color: black;
   font-weight: 400;
+  text-align: ${(props) => props.textAlign || "auto"};
   padding: ${(props) => props.padding || "0 5px"};
   flex-basis: ${(props) => props.flexBasis || "auto"};
 `;

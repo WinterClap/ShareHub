@@ -107,7 +107,7 @@ export const Offers = ({ updateOffersCounter, locationQuery, setLocationQuery })
                 <Text flexBasis="15%" key={`OFFER_TITLE:${post.id}:${post.title}`}>
                   {post.title}
                 </Text>
-                <Text flexBasis="40%" key={`OFFER_DESCRIPTION:${post.id}:${post.description}`}>
+                <Text textAlign="justify" flexBasis="40%" key={`OFFER_DESCRIPTION:${post.id}:${post.description}`}>
                   {post.description}
                 </Text>
                 <Text flexBasis="15%" key={`OFFER_CITY:${post.id}:${post.city}`}>

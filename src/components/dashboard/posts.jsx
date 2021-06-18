@@ -80,7 +80,7 @@ export const Posts = ({ setShowPostModal, updatePostsCounter }) => {
                   <Text flexBasis="10%" key={`POST_TITLE:${post.id}:${post.title}`}>
                     {post.title}
                   </Text>
-                  <Text flexBasis="40%" key={`POST_DESCRIPTION:${post.id}:${post.description}`}>
+                  <Text textAlign="justify" flexBasis="40%" key={`POST_DESCRIPTION:${post.id}:${post.description}`}>
                     {post.description}
                   </Text>
                   <Text flexBasis="10%" key={`POST_TYPEOFOFFER:${post.id}:${post.typeOfOffer}`}>
