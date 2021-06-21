@@ -178,7 +178,7 @@ export const SignIn = () => {
       setLoading(false);
       history.push("/dashboard/content");
     } catch (error) {
-      setError("Error while resetting password. Please check your email");
+      setError("Error while logging in. Please check your email and password");
       setLoading(false);
     }
   }
