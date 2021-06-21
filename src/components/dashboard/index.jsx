@@ -1,12 +1,12 @@
 import React from "react";
-import { DashboardNavBar } from "./navBar";
+import { DashboardNavBar } from "./NavBar/navBar";
 import styled from "styled-components";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import { DashboardContent } from "./dashboardContent";
+import { Switch } from "react-router-dom";
+import { DashboardContent } from "./DashboardContent/dashboardContent";
 
 import "../../App.css";
-import { MyAccount } from "./myAccount";
-import { PrivateRoute } from "../privateRoute";
+import { MyAccount } from "./MyAccount/myAccount";
+import { PrivateRoute } from "../PrivateRoute/privateRoute";
 
 const Container = styled.div`
   background-color: #f8f8f8;
